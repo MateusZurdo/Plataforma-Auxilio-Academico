@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+		
+			<h:panelGrid style="margin: 0 auto; margin-top: 100px">
+				<h:outputText styleClass="fa fa-lock fa-5x" />
+			</h:panelGrid>
+			<h:form>
+				<center>
+					<h:panelGrid cellspacing="10">
+             	Digite seu usuário e senha:                 
+                <p:messages id="messagesLogin" />
+						<p:inputText placeholder="Usuário" size="40" />
+						<p:password placeholder="Senha" size="40" />
+						<p:commandButton value="Login" />
+					</h:panelGrid>
+				</center>
+			</h:form>
+	</ui:define>
+
+</ui:composition>
