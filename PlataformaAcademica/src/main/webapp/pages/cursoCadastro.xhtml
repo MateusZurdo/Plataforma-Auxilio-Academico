@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/template_exemplo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Cadastro de Curso" />
+				</f:facet>
+			</p:toolbar>
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+				<p:outputLabel for="mec" value="Identificação (MEC):" />
+				<p:inputText id="mec" />
+
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome" />
+
+				<p:outputLabel for="cargaHora" value="Carga Horária:" />
+				<p:inputText id="cargaHora" />
+
+				<p:outputLabel for="periodos" value="Período(s):" />
+				<p:selectOneRadio id="periodos" unselectable="true">
+					<f:selectItem itemLabel="Diurno" itemValue="D" />
+					<f:selectItem itemLabel="Matutino" itemValue="M" />
+					<f:selectItem itemLabel="Noturno" itemValue="N" />
+				</p:selectOneRadio>
+
+				<p:commandButton value="Cadastrar" icon="fa fa-fw fa-save"
+					type="button" />
+				<p:button value="Voltar" outcome="/pages/cursoPesquisa.xhtml" />
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/template_exemplo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="frmCursoPesquisa">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Cursos" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid columns="6" id="pnCursoPesquisa">
+				<p:outputLabel value="Num. MEC:" />
+				<p:inputText maxlength="10" size="30" />
+
+				<p:outputLabel value="Nome:" />
+				<p:inputText maxlength="50" size="30" />
+
+				<p:button value="Buscar" />
+				<p:button value="Novo" outcome="/pages/cursoCadastro.xhtml" />
+			</h:panelGrid>
+			<p:dataTable var="cursos" emptyMessage="Nenhum registro encontrado"
+				rows="10" paginator="true">
+				<p:column headerText="Num. MEC">
+					<h:outputText />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<h:outputText />
+				</p:column>
+
+				<p:column headerText="Carga Horária">
+					<h:outputText />
+				</p:column>
+
+				<p:column headerText="Diurno">
+					<h:outputText />
+				</p:column>
+
+				<p:column headerText="Matutino">
+					<h:outputText />
+				</p:column>
+
+				<p:column headerText="Noturno">
+					<h:outputText />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<h:outputText />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
