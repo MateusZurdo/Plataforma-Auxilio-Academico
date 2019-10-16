@@ -2,10 +2,11 @@ package br.com.plataformaacademica.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Materia {
-	@Column(nullable = false, length = 10)
+	@Id
 	private String sigla;
 
 	@Column(nullable = false, length = 100)

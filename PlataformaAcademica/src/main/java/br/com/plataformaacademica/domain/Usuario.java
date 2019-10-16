@@ -4,13 +4,18 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 public class Usuario {
-	@Column(nullable = false)
-	private Integer id_usuario;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 
 	@Column(nullable = false, length = 100)
 	private String nome;
@@ -33,14 +38,6 @@ public class Usuario {
 
 	@Column(nullable = false)
 	private boolean tipo;
-
-	public Integer getId_usuario() {
-		return id_usuario;
-	}
-
-	public void setId_usuario(Integer id_usuario) {
-		this.id_usuario = id_usuario;
-	}
 
 	public String getNome() {
 		return nome;

@@ -2,10 +2,11 @@ package br.com.plataformaacademica.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Curso {
-	@Column(nullable = false)
+	@Id
 	private Integer num_mec;
 
 	@Column(nullable = false, length = 100)
