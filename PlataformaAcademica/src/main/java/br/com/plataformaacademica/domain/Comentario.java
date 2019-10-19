@@ -1,5 +1,6 @@
 package br.com.plataformaacademica.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Comentario {
+public class Comentario implements Serializable  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

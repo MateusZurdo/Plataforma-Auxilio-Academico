@@ -8,6 +8,7 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
+		<p:growl id="mensagem" />
 		<h:form id="frmProfessorPesquisa">
 			<p:toolbar>
 				<f:facet name="left">
@@ -16,44 +17,111 @@
 			</p:toolbar>
 			<h:panelGrid columns="6" id="pnProfessorPesquisa">
 				<p:outputLabel value="Matrícula:" />
-				<p:inputText maxlength="20" size="30" />
+				<p:inputText maxlength="13" size="30" />
 
 				<p:outputLabel value="Nome:" />
 				<p:inputText maxlength="50" size="30" />
 
 				<p:button value="Buscar" />
-				<p:button value="Novo" outcome="/pages/professorCadastro.xhtml" />
+				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+					actionListener="#{professorBean.novo}"
+					update=":mensagem :frmCadProfessor:pnCadProfessor" />
 			</h:panelGrid>
-			<p:dataTable var="professores"
-				emptyMessage="Nenhum registro encontrado" rows="10" paginator="true">
-				<p:column headerText="Matrícula">
-					<h:outputText />
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				rows="10" paginator="true" value="#{professorBean.professors}"
+				var="cursorfor">
+				<p:column headerText="RA">
+					<h:outputText value="#{cursorfor.num_matricula}" />
 				</p:column>
 
 				<p:column headerText="Nome">
-					<h:outputText />
-				</p:column>
-
-				<p:column headerText="Matérias">
-					<h:outputText />
+					<h:outputText
+						value="#{cursorfor.id_usuario.nome} #{cursorfor.id_usuario.sobrenome}" />
 				</p:column>
 
 				<p:column headerText="Email">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_usuario.email}" />
 				</p:column>
 
 				<p:column headerText="Sexo">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_usuario.sexo}" />
 				</p:column>
 
 				<p:column headerText="Data Nasc.">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_usuario.data_nasc}" />
 				</p:column>
 
 				<p:column headerText="Opções">
-					<h:outputText />
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{professorBean.excluir}"
+						update=":mensagem :frmProfessorPesquisa:tabela">
+						<p:confirm header="Excluir Professor"
+							message="Deseja excluir o professor?" icon="ui-icon-alert" />
+						<f:attribute name="professorSelecionado" value="#{cursorfor}" />
+						<f:attribute name="usuarioSelecionado" value="#{cursorfor.id_usuario}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{professorBean.editar}"
+						update=":mensagem :frmCadProfessor:pnCadProfessor"
+						oncomplete="PF('dialogo').show();">
+						<f:attribute name="professorSelecionado" value="#{cursorfor}" />
+						<f:attribute name="usuarioSelecionado" value="#{cursorfor.id_usuario}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
+			
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
+
+		<p:dialog header="Professor" widgetVar="dialogo" draggable="false"
+			resizable="false" modal="false" closable="true">
+			<h:form id="frmCadProfessor">
+				<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadProfessor">
+					<p:outputLabel for="matricula" value="Matrícula:" />
+					<p:inputText id="matricula" value="#{professorBean.professor.num_matricula}">
+						<f:convertNumber />
+					</p:inputText>
+
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{professorBean.usuario.nome}" />
+
+					<p:outputLabel for="sobrenome" value="Sobrenome:" />
+					<p:inputText id="sobrenome" value="#{professorBean.usuario.sobrenome}" />
+
+					<p:outputLabel for="email" value="Email:" />
+					<p:inputText id="email" value="#{professorBean.usuario.email}" />
+
+					<p:outputLabel for="sexo" value="Sexo:" />
+
+					<p:selectOneRadio id="sexo" unselectable="true"
+						value="#{professorBean.usuario.sexo}">
+						<f:selectItem itemLabel="Feminino" itemValue="F" />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+					</p:selectOneRadio>
+
+					<p:outputLabel for="data_nasc" value="Data de nascimento:" />
+					<p:inputMask id="data_nasc" mask="99/99/9999" maxlength="20"
+						size="20" value="#{professorBean.usuario.data_nasc}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+					</p:inputMask>
+
+					<p:outputLabel for="senha" value="Senha:" />
+					<p:password id="senha" value="#{professorBean.usuario.senha}" />
+
+					<p:outputLabel for="confirmacao_senha" value="Confirme a senha:" />
+					<p:password id="confirmacao_senha" />
+
+					<p:commandButton value="Salvar"
+						actionListener="#{professorBean.salvar}"
+						update=":mensagem :frmCadProfessor:pnCadProfessor :frmProfessorPesquisa:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

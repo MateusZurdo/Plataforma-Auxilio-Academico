@@ -1,5 +1,6 @@
 package br.com.plataformaacademica.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Usuario {
+public class Usuario implements Serializable  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +39,14 @@ public class Usuario {
 
 	@Column(nullable = false)
 	private boolean tipo;
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
 
 	public String getNome() {
 		return nome;

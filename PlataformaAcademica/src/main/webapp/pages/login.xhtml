@@ -6,21 +6,24 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<ui:define name="conteudo">
-		
-			<h:panelGrid style="margin: 0 auto; margin-top: 100px">
-				<h:outputText styleClass="fa fa-lock fa-5x" />
-			</h:panelGrid>
-			<h:form>
-				<center>
-					<h:panelGrid cellspacing="10">
+		<p:growl id="mensagem" />
+		<h:panelGrid style="margin: 0 auto; margin-top: 100px">
+			<h:outputText styleClass="fa fa-lock fa-5x" />
+		</h:panelGrid>
+		<h:form id="frmLogin">
+			<center>
+				<h:panelGrid cellspacing="10">
              	Digite seu usuário e senha:                 
                 <p:messages id="messagesLogin" />
-						<p:inputText placeholder="Usuário" size="40" />
-						<p:password placeholder="Senha" size="40" />
-						<p:commandButton value="Login" />
-					</h:panelGrid>
-				</center>
-			</h:form>
+					<p:inputText placeholder="Usuário" size="40"
+						value="#{usuarioBean.email}" />
+					<p:password placeholder="Senha" size="40"
+						value="#{usuarioBean.senha}" />
+					<p:commandButton value="Login"
+						actionListener="#{usuarioBean.logar}" update=":mensagem" />
+				</h:panelGrid>
+			</center>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

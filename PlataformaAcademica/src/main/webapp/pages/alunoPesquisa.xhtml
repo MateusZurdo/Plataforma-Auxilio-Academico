@@ -8,6 +8,7 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
+		<p:growl id="mensagem" />
 		<h:form id="frmAlunoPesquisa">
 			<p:toolbar>
 				<f:facet name="left">
@@ -22,38 +23,117 @@
 				<p:inputText maxlength="50" size="30" />
 
 				<p:button value="Buscar" />
-				<p:button value="Novo" outcome="/pages/alunoCadastro.xhtml" />
+				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+					actionListener="#{alunoBean.novo}"
+					update=":mensagem :frmCadAluno:pnCadAluno" />
 			</h:panelGrid>
-			<p:dataTable var="alunos" emptyMessage="Nenhum registro encontrado"
-				rows="10" paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				rows="10" paginator="true" value="#{alunoBean.alunos}"
+				var="cursorfor">
 				<p:column headerText="RA">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.ra}" />
 				</p:column>
 
 				<p:column headerText="Nome">
-					<h:outputText />
+					<h:outputText
+						value="#{cursorfor.id_usuario.nome} #{cursorfor.id_usuario.sobrenome}" />
 				</p:column>
 
 				<p:column headerText="Cursando">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_curso.nome}" />
 				</p:column>
 
 				<p:column headerText="Email">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_usuario.email}" />
 				</p:column>
 
 				<p:column headerText="Sexo">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_usuario.sexo}" />
 				</p:column>
 
 				<p:column headerText="Data Nasc.">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_usuario.data_nasc}" />
 				</p:column>
 
 				<p:column headerText="Opções">
-					<h:outputText />
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{alunoBean.excluir}"
+						update=":mensagem :frmAlunoPesquisa:tabela">
+						<p:confirm header="Excluir Aluno"
+							message="Deseja excluir o aluno?" icon="ui-icon-alert" />
+						<f:attribute name="alunoSelecionado" value="#{cursorfor}" />
+						<f:attribute name="usuarioSelecionado" value="#{cursorfor.id_usuario}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{alunoBean.editar}"
+						update=":mensagem :frmCadAluno:pnCadAluno"
+						oncomplete="PF('dialogo').show();">
+						<f:attribute name="alunoSelecionado" value="#{cursorfor}" />
+						<f:attribute name="usuarioSelecionado" value="#{cursorfor.id_usuario}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
+			
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
+
+		<p:dialog header="Aluno" widgetVar="dialogo" draggable="false"
+			resizable="false" modal="false" closable="true">
+			<h:form id="frmCadAluno">
+				<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadAluno">
+					<p:outputLabel for="ra" value="RA:" />
+					<p:inputText id="ra" value="#{alunoBean.aluno.ra}">
+						<f:convertNumber />
+					</p:inputText>
+
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{alunoBean.usuario.nome}" />
+
+					<p:outputLabel for="sobrenome" value="Sobrenome:" />
+					<p:inputText id="sobrenome" value="#{alunoBean.usuario.sobrenome}" />
+
+					<p:outputLabel for="email" value="Email:" />
+					<p:inputText id="email" value="#{alunoBean.usuario.email}" />
+
+					<p:outputLabel for="sexo" value="Sexo:" />
+
+					<p:selectOneRadio id="sexo" unselectable="true"
+						value="#{alunoBean.usuario.sexo}">
+						<f:selectItem itemLabel="Feminino" itemValue="F" />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+					</p:selectOneRadio>
+
+					<p:outputLabel value="Curso:" />
+					<p:selectOneMenu filter="true" value="#{alunoBean.aluno.id_curso}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemValue="" itemLabel="Selecione um curso" />
+						<f:selectItems value="#{alunoBean.cursos}" var="curso"
+							itemValue="#{curso}" itemLabel="#{curso.nome}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="data_nasc" value="Data de nascimento:" />
+					<p:inputMask id="data_nasc" mask="99/99/9999" maxlength="20"
+						size="20" value="#{alunoBean.usuario.data_nasc}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+					</p:inputMask>
+
+					<p:outputLabel for="senha" value="Senha:" />
+					<p:password id="senha" value="#{alunoBean.usuario.senha}" />
+
+					<p:outputLabel for="confirmacao_senha" value="Confirme a senha:" />
+					<p:password id="confirmacao_senha" />
+
+					<p:commandButton value="Salvar"
+						actionListener="#{alunoBean.salvar}"
+						update=":mensagem :frmCadAluno:pnCadAluno :frmAlunoPesquisa:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

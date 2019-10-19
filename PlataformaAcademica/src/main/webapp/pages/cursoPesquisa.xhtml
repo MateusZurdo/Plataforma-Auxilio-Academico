@@ -8,6 +8,7 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
+		<p:growl id="mensagem" />
 		<h:form id="frmCursoPesquisa">
 			<p:toolbar>
 				<f:facet name="left">
@@ -22,38 +23,93 @@
 				<p:inputText maxlength="50" size="30" />
 
 				<p:button value="Buscar" />
-				<p:button value="Novo" outcome="/pages/cursoCadastro.xhtml" />
+				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+					actionListener="#{cursoBean.novo}"
+					update=":mensagem :frmCadCurso:pnCadCurso" />
 			</h:panelGrid>
-			<p:dataTable var="cursos" emptyMessage="Nenhum registro encontrado"
-				rows="10" paginator="true">
-				<p:column headerText="Num. MEC">
-					<h:outputText />
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				rows="10" paginator="true" value="#{cursoBean.cursos}"
+				var="cursorfor">
+				<p:column headerText="Num. MEC" sortBy="#{cursorfor.num_mec}">
+					<h:outputText value="#{cursorfor.num_mec}" />
 				</p:column>
 
-				<p:column headerText="Nome">
-					<h:outputText />
+				<p:column headerText="Nome" sortBy="#{cursorfor.nome}">
+					<h:outputText value="#{cursorfor.nome}" />
 				</p:column>
 
 				<p:column headerText="Carga Horária">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.carga_horaria}" />
 				</p:column>
 
 				<p:column headerText="Diurno">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.diurno}" />
 				</p:column>
 
 				<p:column headerText="Matutino">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.matutino}" />
 				</p:column>
 
 				<p:column headerText="Noturno">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.noturno}" />
 				</p:column>
 
 				<p:column headerText="Opções">
-					<h:outputText />
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{cursoBean.excluir}"
+						update=":mensagem :frmCursoPesquisa:tabela">
+						<p:confirm header="Excluir Curso"
+							message="Deseja excluir o curso?" icon="ui-icon-alert" />
+						<f:attribute name="cursoSelecionado" value="#{cursorfor}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{cursoBean.editar}"
+						update=":frmCadCurso:pnCadCurso"
+						oncomplete="PF('dialogo').show();">
+						<f:attribute name="cursoSelecionado" value="#{cursorfor}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
+
+		<p:dialog header="Curso - Editar" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="false" closable="true">
+			<h:form id="frmCadCurso">
+				<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadCurso">
+					<p:outputLabel for="mec" value="Identificação (MEC):" />
+					<p:inputText id="mec" value="#{cursoBean.curso.num_mec}" />
+
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{cursoBean.curso.nome}" />
+
+					<p:outputLabel for="cargaHora" value="Carga Horária:" />
+					<p:inputText id="cargaHora"
+						value="#{cursoBean.curso.carga_horaria}" />
+
+					<p:outputLabel for="periodos" value="Período(s):" />
+					<p:selectManyCheckbox id="periodos" unselectable="true">
+						<p:selectBooleanCheckbox itemLabel="Diurno" itemValue="D"
+							value="#{cursoBean.curso.diurno}" />
+						<p:selectBooleanCheckbox itemLabel="Matutino" itemValue="M"
+							value="#{cursoBean.curso.matutino}" />
+						<p:selectBooleanCheckbox itemLabel="Noturno" itemValue="N"
+							value="#{cursoBean.curso.noturno}" />
+					</p:selectManyCheckbox>
+
+					<p:commandButton value="Salvar"
+						actionListener="#{cursoBean.salvar}"
+						update=":mensagem :frmCadCurso:pnCadCurso :frmCursoPesquisa:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
 	</ui:define>
 </ui:composition>

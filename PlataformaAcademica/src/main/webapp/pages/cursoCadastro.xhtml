@@ -8,31 +8,35 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form>
+		<p:growl id="mensagem" />
+		<h:form id="frmCadCurso">
 			<p:toolbar>
 				<f:facet name="left">
 					<h:outputText value="Cadastro de Curso" />
 				</f:facet>
 			</p:toolbar>
-			<p:panelGrid columns="2" styleClass="ui-noborder">
+			<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadCurso">
 				<p:outputLabel for="mec" value="Identificação (MEC):" />
-				<p:inputText id="mec" />
+				<p:inputText id="mec" value="#{cursoBean.curso.num_mec}" />
 
 				<p:outputLabel for="nome" value="Nome:" />
-				<p:inputText id="nome" />
+				<p:inputText id="nome" value="#{cursoBean.curso.nome}" />
 
 				<p:outputLabel for="cargaHora" value="Carga Horária:" />
-				<p:inputText id="cargaHora" />
+				<p:inputText id="cargaHora" value="#{cursoBean.curso.carga_horaria}" />
 
 				<p:outputLabel for="periodos" value="Período(s):" />
-				<p:selectOneRadio id="periodos" unselectable="true">
-					<f:selectItem itemLabel="Diurno" itemValue="D" />
-					<f:selectItem itemLabel="Matutino" itemValue="M" />
-					<f:selectItem itemLabel="Noturno" itemValue="N" />
-				</p:selectOneRadio>
+				<p:selectManyCheckbox id="periodos" unselectable="true">
+					<p:selectBooleanCheckbox itemLabel="Diurno" itemValue="D"
+						value="#{cursoBean.curso.diurno}" />
+					<p:selectBooleanCheckbox itemLabel="Matutino" itemValue="M"
+						value="#{cursoBean.curso.matutino}" />
+					<p:selectBooleanCheckbox itemLabel="Noturno" itemValue="N"
+						value="#{cursoBean.curso.noturno}" />
+				</p:selectManyCheckbox>
 
-				<p:commandButton value="Cadastrar" icon="fa fa-fw fa-save"
-					type="button" />
+				<p:commandButton value="Cadastrar"
+					actionListener="#{cursoBean.salvar}" update=":mensagem :frmCadCurso:pnCadCurso" />
 				<p:button value="Voltar" outcome="/pages/cursoPesquisa.xhtml" />
 			</p:panelGrid>
 		</h:form>

@@ -8,6 +8,7 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
+		<p:growl id="mensagem" />
 		<h:form id="frmMateriaPesquisa">
 			<p:toolbar>
 				<f:facet name="left">
@@ -22,30 +23,62 @@
 				<p:inputText maxlength="50" size="30" />
 
 				<p:button value="Buscar" />
-				<p:button value="Novo" outcome="/pages/materiaCadastro.xhtml" />
+				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+					actionListener="#{materiaBean.novo}"
+					update=":mensagem :frmCadMateria:pnCadMateria" />
 			</h:panelGrid>
-			<p:dataTable var="meterias" emptyMessage="Nenhum registro encontrado"
-				rows="10" paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				rows="10" paginator="true" value="#{materiaBean.materias}"
+				var="cursorfor">
 				<p:column headerText="Sigla">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.sigla}" />
 				</p:column>
 
 				<p:column headerText="Nome">
-					<h:outputText />
-				</p:column>
-
-				<p:column headerText="Curso">
-					<h:outputText />
-				</p:column>
-
-				<p:column headerText="Professor">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.nome}" />
 				</p:column>
 
 				<p:column headerText="Opções">
-					<h:outputText />
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{materiaBean.excluir}"
+						update=":mensagem :frmMateriaPesquisa:tabela">
+						<p:confirm header="Excluir Matéria"
+							message="Deseja excluir a mtéria?" icon="ui-icon-alert" />
+						<f:attribute name="materiaSelecionado" value="#{cursorfor}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{materiaBean.editar}"
+						update=":frmCadMateria:pnCadMateria"
+						oncomplete="PF('dialogo').show();">
+						<f:attribute name="materiaSelecionado" value="#{cursorfor}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
+
+		<p:dialog header="Materia - Editar" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="false" closable="true">
+			<h:form id="frmCadMateria">
+				<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadMateria">
+					<p:outputLabel for="sigla" value="Sigla:" />
+					<p:inputText id="sigla" value="#{materiaBean.materia.sigla}" />
+
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" value="#{materiaBean.materia.nome}" />
+
+					<p:commandButton value="Salvar"
+						actionListener="#{materiaBean.salvar}"
+						update=":mensagem :frmCadMateria:pnCadMateria :frmMateriaPesquisa:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

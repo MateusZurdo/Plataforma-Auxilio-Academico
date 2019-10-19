@@ -1,5 +1,8 @@
 package br.com.plataformaacademica.domain;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -7,12 +10,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Professor {
+public class Professor implements Serializable  {
 
 	@Id
 	private Integer num_matricula;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false)
 	private Usuario id_usuario;
 
@@ -31,5 +34,7 @@ public class Professor {
 	public void setNum_matricula(Integer num_matricula) {
 		this.num_matricula = num_matricula;
 	}
+	
+	
 
 }

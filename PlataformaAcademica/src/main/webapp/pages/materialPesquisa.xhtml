@@ -8,6 +8,7 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
+		<p:growl id="mensagem" />
 		<h:form id="frmMaterialPesquisa">
 			<p:toolbar>
 				<f:facet name="left">
@@ -22,22 +23,69 @@
 				<p:inputText maxlength="50" size="30" />
 
 				<p:button value="Buscar" />
-				<p:button value="Novo" outcome="/pages/materialCadastro.xhtml" />
+				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+					actionListener="#{materialBean.novo}"
+					update=":mensagem :frmCadMaterial:pnCadMaterial" />
 			</h:panelGrid>
-			<p:dataTable var="materiais"
-				emptyMessage="Nenhum registro encontrado" rows="10" paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				rows="10" paginator="true" value="#{materialBean.materials}"
+				var="cursorfor">
 				<p:column headerText="Título">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.titulo}" />
 				</p:column>
 
 				<p:column headerText="Matéria">
-					<h:outputText />
+					<h:outputText value="#{cursorfor.id_materia.nome}" />
 				</p:column>
 
 				<p:column headerText="Opções">
-					<h:outputText />
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{materialBean.excluir}"
+						update=":mensagem :frmMaterialPesquisa:tabela">
+						<p:confirm header="Excluir Material"
+							message="Deseja excluir o material?" icon="ui-icon-alert" />
+						<f:attribute name="materialSelecionado" value="#{cursorfor}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{materialBean.editar}"
+						update=":mensagem :frmCadMaterial:pnCadMaterial"
+						oncomplete="PF('dialogo').show();">
+						<f:attribute name="materialSelecionado" value="#{cursorfor}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</h:form>
+
+		<p:dialog header="Material" widgetVar="dialogo" draggable="false"
+			resizable="false" modal="false" closable="true">
+			<h:form id="frmCadMaterial">
+				<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadMaterial">
+
+					<p:outputLabel for="titulo" value="Título:" />
+					<p:inputText id="titulo" value="#{materialBean.material.titulo}"/>
+
+
+					<p:outputLabel value="Matéria:" />
+					<p:selectOneMenu filter="true" value="#{materialBean.material.id_materia}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemValue="" itemLabel="Selecione uma matéria" />
+						<f:selectItems value="#{materialBean.materias}" var="materia"
+							itemValue="#{materia}" itemLabel="#{materia.nome}" />
+					</p:selectOneMenu>
+
+					<p:commandButton value="Salvar"
+						actionListener="#{materialBean.salvar}"
+						update=":mensagem :frmCadMaterial:pnCadMaterial :frmMaterialPesquisa:tabela" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

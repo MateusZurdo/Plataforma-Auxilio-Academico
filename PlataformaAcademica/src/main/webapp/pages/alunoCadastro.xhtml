@@ -8,42 +8,47 @@
 	template="/templates/template_exemplo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form>
+		<p:growl id="mensagem" />
+		<h:form id="frmCadAluno">
 			<p:toolbar>
 				<f:facet name="left">
 					<h:outputText value="Cadastro de Usuário" />
 				</f:facet>
 			</p:toolbar>
-			<p:panelGrid columns="2" styleClass="ui-noborder">
+			<p:panelGrid columns="2" styleClass="ui-noborder" id="pnCadAluno">
 				<p:outputLabel for="ra" value="RA:" />
-				<p:inputText id="ra" />
+				<p:inputText id="ra" value="#{alunoBean.aluno.ra}" />
 
 				<p:outputLabel for="nome" value="Nome:" />
-				<p:inputText id="nome" />
+				<p:inputText id="nome" value="#{alunoBean.aluno.id_usuario.nome}" />
 
 				<p:outputLabel for="sobrenome" value="Sobrenome:" />
-				<p:inputText id="sobrenome" />
+				<p:inputText id="sobrenome"
+					value="#{alunoBean.aluno.id_usuario.sobrenome}" />
 
 				<p:outputLabel for="email" value="Email:" />
-				<p:inputText id="email" />
+				<p:inputText id="email" value="#{alunoBean.aluno.id_usuario.email}" />
 
 				<p:outputLabel for="sexo" value="Sexo:" />
 
-				<p:selectOneRadio id="sexo" unselectable="true">
+				<p:selectOneRadio id="sexo" unselectable="true"
+					value="#{alunoBean.aluno.id_usuario.sexo}">
 					<f:selectItem itemLabel="Feminino" itemValue="F" />
 					<f:selectItem itemLabel="Masculino" itemValue="M" />
 				</p:selectOneRadio>
 
 				<p:outputLabel value="Curso:" />
-				<p:selectOneMenu>
+				<p:selectOneMenu filter="true" value="#{alunoBean.aluno.id_curso}">
 					<f:selectItem itemValue="" itemLabel="Selecione um curso" />
+					<f:selectItems value="#{alunoBean.cursos}" />
 				</p:selectOneMenu>
 
 				<p:outputLabel for="data_nasc" value="Data de nascimento:" />
-				<p:inputMask id="data_nasc" mask="99/99/9999" maxlength="20" size="20" />
+				<p:inputMask id="data_nasc" mask="99/99/9999" maxlength="20"
+					size="20" value="#{alunoBean.aluno.id_usuario.data_nasc}"/>
 
 				<p:outputLabel for="senha" value="Senha:" />
-				<p:password id="senha" />
+				<p:password id="senha" value="#{alunoBean.aluno.id_usuario.senha}"/>
 
 				<p:outputLabel for="confirmacao_senha" value="Confirme a senha:" />
 				<p:password id="confirmacao_senha" />

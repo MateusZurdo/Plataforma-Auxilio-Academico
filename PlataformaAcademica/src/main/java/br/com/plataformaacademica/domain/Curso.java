@@ -1,11 +1,13 @@
 package br.com.plataformaacademica.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Curso {
+public class Curso implements Serializable {
 	@Id
 	private Integer num_mec;
 
@@ -70,6 +72,31 @@ public class Curso {
 
 	public void setNoturno(boolean noturno) {
 		this.noturno = noturno;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((num_mec == null) ? 0 : num_mec.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Curso other = (Curso) obj;
+		if (num_mec == null) {
+			if (other.num_mec != null)
+				return false;
+		} else if (!num_mec.equals(other.num_mec))
+			return false;
+		return true;
 	}
 
 }

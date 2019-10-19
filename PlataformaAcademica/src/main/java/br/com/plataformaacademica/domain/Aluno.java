@@ -1,5 +1,8 @@
 package br.com.plataformaacademica.domain;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -7,12 +10,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Aluno {
+public class Aluno implements Serializable {
 
 	@Id
 	private Integer ra;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false)
 	private Usuario id_usuario;
 
@@ -42,6 +45,31 @@ public class Aluno {
 
 	public void setId_curso(Curso id_curso) {
 		this.id_curso = id_curso;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ra == null) ? 0 : ra.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Aluno other = (Aluno) obj;
+		if (ra == null) {
+			if (other.ra != null)
+				return false;
+		} else if (!ra.equals(other.ra))
+			return false;
+		return true;
 	}
 
 }
