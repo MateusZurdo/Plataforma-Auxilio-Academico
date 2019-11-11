@@ -3,17 +3,20 @@ package br.com.plataformaacademica.domain;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 public class Aluno implements Serializable {
 
 	@Id
-	private Integer ra;
+	@Column(length = 20)
+	private String ra;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false)
@@ -23,11 +26,11 @@ public class Aluno implements Serializable {
 	@JoinColumn(nullable = false)
 	private Curso id_curso;
 
-	public Integer getRa() {
+	public String getRa() {
 		return ra;
 	}
 
-	public void setRa(Integer ra) {
+	public void setRa(String ra) {
 		this.ra = ra;
 	}
 
