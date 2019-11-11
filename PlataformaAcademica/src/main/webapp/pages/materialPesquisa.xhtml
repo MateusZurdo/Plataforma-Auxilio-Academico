@@ -16,6 +16,13 @@
 				</f:facet>
 			</p:toolbar>
 			<h:panelGrid columns="6" id="pnMaterialPesquisa">
+				<p:outputLabel value="Título:" />
+				<p:inputText maxlength="50" size="30" />
+
+				<p:outputLabel value="Matéria:" />
+				<p:inputText maxlength="50" size="30" />
+
+				<p:button value="Buscar" />
 				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 					actionListener="#{materialBean.novo}"
 					update=":mensagem :frmCadMaterial:pnCadMaterial" />
@@ -23,7 +30,7 @@
 			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
 				rows="10" paginator="true" value="#{materialBean.materials}"
 				var="cursorfor">
-				<p:column headerText="Título" filterBy="#{cursorfor.titulo}">
+				<p:column headerText="Título">
 					<h:outputText value="#{cursorfor.titulo}" />
 				</p:column>
 

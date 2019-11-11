@@ -16,6 +16,13 @@
 				</f:facet>
 			</p:toolbar>
 			<h:panelGrid columns="6" id="pnProfessorPesquisa">
+				<p:outputLabel value="Matrícula:" />
+				<p:inputText maxlength="13" size="30" />
+
+				<p:outputLabel value="Nome:" />
+				<p:inputText maxlength="50" size="30" />
+
+				<p:button value="Buscar" />
 				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 					actionListener="#{professorBean.novo}"
 					update=":mensagem :frmCadProfessor:pnCadProfessor" />
@@ -23,11 +30,11 @@
 			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
 				rows="10" paginator="true" value="#{professorBean.professors}"
 				var="cursorfor">
-				<p:column headerText="Matricula" filterBy="#{cursorfor.num_matricula}">
+				<p:column headerText="RA">
 					<h:outputText value="#{cursorfor.num_matricula}" />
 				</p:column>
 
-				<p:column headerText="Nome" filterBy="#{cursorfor.id_usuario.nome}">
+				<p:column headerText="Nome">
 					<h:outputText
 						value="#{cursorfor.id_usuario.nome} #{cursorfor.id_usuario.sobrenome}" />
 				</p:column>
