@@ -93,7 +93,6 @@ public class AlunoBean implements Serializable {
 
 	public void salvar() {
 		try {
-
 			UsuarioDao usuarioDao = new UsuarioDao();
 			usuarioDao.mergeWithReturn(usuario);
 			if (usuario != null) {

@@ -15,14 +15,7 @@
 					<h:outputText value="Cursos" />
 				</f:facet>
 			</p:toolbar>
-			<h:panelGrid columns="6" id="pnCursoPesquisa">
-				<p:outputLabel value="Num. MEC:" />
-				<p:inputText maxlength="10" size="30" />
-
-				<p:outputLabel value="Nome:" />
-				<p:inputText maxlength="50" size="30" />
-
-				<p:button value="Buscar" />
+			<h:panelGrid columns="1" id="pnCursoPesquisa">
 				<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 					actionListener="#{cursoBean.novo}"
 					update=":mensagem :frmCadCurso:pnCadCurso" />
@@ -34,7 +27,7 @@
 					<h:outputText value="#{cursorfor.num_mec}" />
 				</p:column>
 
-				<p:column headerText="Nome" sortBy="#{cursorfor.nome}">
+				<p:column headerText="Nome" sortBy="#{cursorfor.nome}" filterBy="#{cursorfor.nome}">
 					<h:outputText value="#{cursorfor.nome}" />
 				</p:column>
 
